@@ -42,3 +42,20 @@ resource "azurerm_storage_account" "storage" {
 
   tags = local.tags
 }
+resource "azurerm_mssql_server" "sqlserver" {
+  name                         = "sql-${var.class_name}-${var.student_name}-${var.environment}"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = azurerm_resource_group.rg.location
+  version                      = "12.0"
+  administrator_login          = "sqladminuser"
+  administrator_login_password = "Password123!"
+  tags                         = local.tags
+}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "vnet-${var.class_name}-${var.student_name}"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  tags                = local.tags
+}
